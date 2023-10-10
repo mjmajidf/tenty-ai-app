@@ -1,0 +1,112 @@
+
+application {
+  config {
+    baseName therapiaAi
+    applicationType monolith
+    packageName com.therapiaai
+    authenticationType jwt
+    prodDatabaseType postgresql
+    clientFramework angular
+  }
+  entities *
+}
+
+enum ExpertiseType{
+  PSYCHOTHERAPIST,
+  PSYCHOANALYSIS
+}
+
+enum SubscriptionStatus{
+  TEMP,
+  PAID,
+  NOT_PAID
+}
+enum PaymentStatus{
+  TEMP,
+  PAID,
+  NOT_PAID
+}
+enum SessionStatus{
+  TEMP,
+  ANALYSING,
+  APPROVED
+}
+enum PackageStatus{
+  ACTIVE,
+  INACTIVE
+}
+enum VoiceActionType{
+  LOUDNESS,
+  SILENCE,
+  YELING
+}
+enum VideoActionType{
+  EYE_CONTACT,
+  SADNESS
+}
+enum FileType{
+  AUDIO,
+  VIDEO
+}
+enum Gender{
+  MALE,
+  FEMALE,
+  UNKNOWN
+}
+
+entity Country{
+  id Long required,
+  name String required ,
+  countryCode String required 
+ 
+}
+
+entity PaymentLog{
+  id Long required,
+  amount Double required ,
+  createDate ZonedDateTime,
+  authorityToken String  ,
+  traceCode String ,
+  status PaymentStatus
+}
+
+entity Therapist {
+  id Long required,
+  user User ,
+  firstName String required ,
+  lastName String required ,
+  phoneNumber String required ,
+  createDate ZonedDateTime,
+  expertiseType ExpertiseType 
+   
+}
+
+entity Client {
+  id Long required,
+  firstName String required ,
+  lastName String required ,
+  phoneNumber String ,
+  email String ,
+  gender Gender ,
+  createDate ZonedDateTime,
+  birthDate ZonedDateTime,
+  comment String
+   
+}
+
+
+entity TempFile {
+  id Long required,
+  name String required,
+  content Blob,
+  suffix String,
+  createDate ZonedDateTime ,
+  fileType FileType 
+  //relation**
+}
+
+
+relationship ManyToOne {
+  Therapist{user} to User,
+  Therapist{country} to Country
+}
